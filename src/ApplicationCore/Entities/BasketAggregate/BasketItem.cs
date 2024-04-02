@@ -30,4 +30,11 @@ public class BasketItem : BaseEntity
 
         Quantity = quantity;
     }
+
+    public void SetUnitPrice(decimal price)
+    {
+        Guard.Against.OutOfRange(price, nameof(price), 0, decimal.MaxValue);
+
+        UnitPrice = price;
+    }
 }
