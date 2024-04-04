@@ -6,6 +6,14 @@ Console.WriteLine("Hello, World!");
 
 public class ServiceRefactor
 {
+
+    private readonly IDataRepository _dataRepository;
+
+    public ServiceRefactor(IDataRepository dataRepository)
+    {
+        _dataRepository = dataRepository;
+    }
+
     public Customer UpsertCustomer(Customer customer)
     {
         //Null and whitespace checks
@@ -115,7 +123,7 @@ public class ServiceRefactor
             throw new ArgumentException("Invalid customer date of birth.", nameof(customer));
         }
 
-        DataRepository.UpsertCustomer(customer);
+        _dataRepository.UpsertCustomer(customer);
 
         return customer;
     }
