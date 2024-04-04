@@ -9,6 +9,7 @@ public class BasketItem : BaseEntity
     public int Quantity { get; private set; }
     public int CatalogItemId { get; private set; }
     public int BasketId { get; private set; }
+    public bool IsAvailable { get {return true; }}
 
     public BasketItem(int catalogItemId, int quantity, decimal unitPrice)
     {
