@@ -24,24 +24,18 @@ namespace WebGoatCore.Data
             return _context.Orders.Single(o => o.OrderId == orderId);
         }
 
-        public int CreateOrder(Order order)
+        public int CreateOrder(Order ord)
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            // These commented lines cause EF Core to do wierd things.
-            // Instead, make the query manually.
-
-            // order = _context.Orders.Add(order).Entity;
-            // _context.SaveChanges();
-            // return order.OrderId;
 
             string shippedDate = order.ShippedDate.HasValue ? "'" + string.Format("yyyy-MM-dd", order.ShippedDate.Value) + "'" : "NULL";
             var sql = "INSERT INTO Orders (" +
                 "CustomerId, EmpId, ConfirmationDate, RequiredDate, ShippedDate, ShippingMethod, Freight, ShipName, ShipAddress, " +
-                "City, Region, ShipZipCode, Country" +
+                "City, Region, ZipCode, Country" +
                 ") VALUES (" +
-                $"'{order.CustomerId}','{order.EmpId}','{order.OrderDate:yyyy-MM-dd}','{order.RequiredDate:yyyy-MM-dd}'," +
-                $"{shippedDate},'{order.ShippingMethod}','{order.Freight}','{order.ShipName}','{order.ShipAddress}'," +
-                $"'{order.City}','{order.Region}','{order.ShipZipCode}','{order.Country}')";
+                $"'{ord.CustomerId}','{ord.EmpId}','{ord.OrderDate:yyyy-MM-dd}','{ord.RequiredDate:yyyy-MM-dd}'," +
+                $"{ord.shippedDate},'{ord.ShippingMethod}','{ord.Freight}','{ord.ShipName}','{ord.ShipAddress}'," +
+                $"'{ord.City}','{ord.Region}','{ord.ZipCode}','{ord.Country}')";
             sql += ";\nSELECT OrderID FROM Orders ORDER BY OrderID DESC LIMIT 1;";
 
             using (var command = _context.Database.GetDbConnection().CreateCommand())
@@ -51,10 +45,10 @@ namespace WebGoatCore.Data
 
                 using var dataReader = command.ExecuteReader();
                 dataReader.Read();
-                order.OrderId = Convert.ToInt32(dataReader[0]);
+                ord.OrderId = Convert.ToInt32(dataReader[0]);
             }
 
-            return order.OrderId;
+            return ord.OrderId;
         }
 
         public void CreateOrderPayment(int orderId, decimal amountPaid, string creditCardNumber, DateTime expirationDate, string approvalCode)
