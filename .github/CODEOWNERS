@@ -2,3 +2,4 @@
 * @flucianomsft
 /src/ApplicationCore/Entities/BasketAggregate/BasketItem.cs @flucianomsft
 /src/DurableFunctions/ImageProcessing.cs @flucianomsft
+/src/DurableWorkflow/ImageProcessing.cs @flucianomsft
